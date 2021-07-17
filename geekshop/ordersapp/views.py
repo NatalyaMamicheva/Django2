@@ -74,11 +74,8 @@ class OrderUpdate(UpdateView):
         if self.request.POST:
             formset = OrderFormSet(self.request.POST, instance=self.object)
         else:
-            orderitems_formset = OrderFormSet(instance=self.object)
-            for form in orderitems_formset.forms:
-                if form.instance.pk:
-                    form.initial['price'] = form.instance.product.price
-            data['orderitems'] = orderitems_formset
+            formset = OrderFormSet(instance=self.object)
+        data['orderitems'] = formset
         return data
 
     def form_valid(self, form):
@@ -93,7 +90,6 @@ class OrderUpdate(UpdateView):
                 orderitems.save()
         if self.object.get_total_cost() == 0:
             self.object.delete()
-
         return super().form_valid(form)
 
 
