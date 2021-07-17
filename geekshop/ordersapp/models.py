@@ -52,6 +52,7 @@ class Order(models.Model):
     def get_item(pk):
         return Order.objects.get(pk=pk)
 
+
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='orderitems')
     product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Продукт')
@@ -59,3 +60,7 @@ class OrderItem(models.Model):
 
     def get_product_cost(self):
         return self.product.price * self.quantity
+
+    @staticmethod
+    def get_item(pk):
+        return OrderItem.objects.get(pk=pk)
